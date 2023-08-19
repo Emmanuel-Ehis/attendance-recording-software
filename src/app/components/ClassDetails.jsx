@@ -11,7 +11,7 @@ const ClassDetails = ({ className }) => {
         <div className="flex items-center space-x-4">
           <div className="flex-grow">
           <p className="text-gray-600">Hi, Emmanuel</p>
-            <p className="text-green-600">Welcome to {className}</p>
+            <p className="text-green-600 text-xl">Welcome to {className}</p>
           </div>
         </div>
         <div className="bg-white rounded-lg p-4 flex items-center space-x-4 shadow-md">
@@ -26,10 +26,10 @@ const ClassDetails = ({ className }) => {
             <p className="text-gray-600">Attendance: 80%</p>
             <p className="text-gray-600">Faculty: Mr. John Doe</p>
             <div className="flex space-x-4">
-              <button className="bg-green-500 text-white px-2 py-1 rounded">
+              <button className="bg-green-500 text-white px-2 py-1 rounded cursor-pointer transform hover:scale-105">
                 Mark me present
               </button>
-              <button className="bg-red-500 text-white px-2 py-1 rounded">
+              <button className="bg-red-500 text-white px-2 py-1 rounded cursor-pointer transform hover:scale-105">
                 Mark me absent
               </button>
             </div>
@@ -47,7 +47,7 @@ const ClassDetails = ({ className }) => {
           Your attendance has been recorded successfully
         </p>
         <div className="flex justify-center">
-          <button className="text-black hover:underline bg-green-500 px-5 py-2 rounded-full">Alright</button>
+          <button className="text-black hover:underline bg-green-500 px-5 py-2 rounded-full cursor-pointer transform hover:scale-105">Alright</button>
         </div>
       </div>
     </div>
