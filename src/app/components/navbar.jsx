@@ -27,8 +27,8 @@ const Navbar = () => {
             height={40}
           />
           <div className="flex flex-col">
-            <div className="font-semibold text-black">John Doe</div>
-            <div className="text-sm text-gray-400">john.doe@example.com</div>
+            <div className="font-semibold text-black">Emmanuel Oriazowan</div>
+            <div className="text-sm text-gray-400">2523224@dundee.ac.uk</div>
           </div>
         </div>
       </div>
