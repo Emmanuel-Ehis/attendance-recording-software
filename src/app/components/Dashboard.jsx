@@ -1,21 +1,10 @@
 // src/app/components/Dashboard.jsx
+"use client"
+
 import React from 'react';
+import { classes } from '@/app/constants';
 
-const classes = [
-  { name: 'Maths', time: '9:30 am', status: 'absent' },
-  { name: 'Physics', time: '10:40 am', status: 'present' },
-  { name: 'Biology', time: '11:45 am', status: 'cancelled' },
-  { name: 'Geography', time: '12:10 am', status: 'absent' },
-  { name: 'Chemistry', time: '12:45 pm', status: 'present' },
-  { name: 'History', time: '1:00 pm', status: 'cancelled' },
-  { name: 'English', time: '2:00 pm', status: 'OnTime' },
-  { name: 'Hindi', time: '2:30 pm', status: 'present' },
-  { name: 'Social Studies', time: '3:00 pm', status: 'present' },
-  { name: 'Computer Science', time: '3:30 pm', status: 'OnTime' },
-  // Add more class objects
-];
-
-const Dashboard = () => {
+const Dashboard = ({ setSelectedClass }) => {
   const currentRoute = "Today's Classes";
 
   return (
@@ -29,10 +18,11 @@ const Dashboard = () => {
         {classes.map((classItem, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg p-4 m-2 flex items-center space-x-4 shadow-md"
+            className="bg-white rounded-lg p-4 m-2 flex items-center space-x-4 shadow-md cursor-pointer"
             style={{ width: '100%', maxWidth: '30rem' }}
+            onClick={() => setSelectedClass(classItem.name)}
           >
-            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-gray-700 font-bold text-lg">
+            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-gray-700 font-bold text-lg cursor-pointer">
               {classItem.name[0]}
             </div>
             <div className="flex flex-col flex-grow">
@@ -60,3 +50,58 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+// const Dashboard = () => {
+//   const currentRoute = "Today's Classes";
+//   const [showDetails, setShowDetails] = useState(false);
+
+//   const toggleDetails = () => {
+//     setShowDetails(!showDetails);
+//   };
+
+//   return (
+//     <div className="p-8 mt-[-4rem]">
+//       <div className="py-4 px-8">
+//         <h1 className="text-2xl font-semibold text-black">Dashboard</h1>
+//         <p className="text-gray-600">{currentRoute}</p>
+//       </div>
+
+//       <div className="flex flex-wrap px-8">
+//         {classes.map((classItem, index) => (
+//           <div
+//             key={index}
+//             className="bg-white rounded-lg p-4 m-2 flex flex-col space-y-2 shadow-md"
+//             style={{ width: '100%', maxWidth: '30rem' }}
+//             onClick={toggleDetails} // Add onClick handler to the card
+//           >
+//             <div className="flex items-center space-x-4">
+//               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-gray-700 font-bold text-lg">
+//                 {classItem.name[0]}
+//               </div>
+//               <div className="flex-grow">
+//                 <p className="font-semibold text-black">{classItem.name}</p>
+//                 {showDetails && (
+//                   <p className="text-gray-600">
+//                     {classItem.status === 'present'
+//                       ? 'You were marked present'
+//                       : classItem.status === 'cancelled'
+//                       ? 'Class Cancelled'
+//                       : 'You were marked absent by Faculty'}
+//                   </p>
+//                 )}
+//               </div>
+//               <div className="flex items-center">
+//                 <p className="text-gray-600">{classItem.time}</p>
+//               </div>
+//             </div>
+//             {showDetails && (
+//               <div className="text-right">
+//                 <button className="text-gray-600">...</button>
+//               </div>
+//             )}
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
