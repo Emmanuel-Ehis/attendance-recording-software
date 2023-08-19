@@ -27,6 +27,7 @@ const Dashboard = ({ setSelectedClass }) => {
             </div>
             <div className="flex flex-col flex-grow">
   <p className="font-semibold text-black">{classItem.name}</p>
+  <p className="text-gray-600 md:hidden">09:00 am</p>
   {classItem.status === 'present' ? (
     <p className="text-green-600">You were marked present</p>
   ) : classItem.status === 'cancelled' ? (
@@ -40,7 +41,7 @@ const Dashboard = ({ setSelectedClass }) => {
   )}
 </div>
             <div className="flex items-center mt-[-2rem]">
-              <p className="text-gray-600">{classItem.time}</p>
+              <p className="text-gray-600 hidden md:block">{classItem.time}</p>
             </div>
           </div>
         ))}
