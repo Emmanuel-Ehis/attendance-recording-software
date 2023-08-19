@@ -30,7 +30,7 @@ const Dashboard = () => {
           <div
             key={index}
             className="bg-white rounded-lg p-4 m-2 flex items-center space-x-4 shadow-md"
-            style={{ minWidth: '30rem' }}
+            style={{ width: '100%', maxWidth: '30rem' }}
           >
             <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-gray-700 font-bold text-lg">
               {classItem.name[0]}
@@ -42,7 +42,7 @@ const Dashboard = () => {
   ) : classItem.status === 'cancelled' ? (
     <p className="text-red-600">Class Cancelled</p>
   ) : classItem.status === 'absent' ? (
-    <p className="text-red-600">You were marked absent by Faculty</p>
+    <p className="text-red-600 text-small">You were marked absent by Faculty</p>
   ) : (
     <button className="bg-green-500 text-white px-2 py-1 rounded-full">
       Mark me present
