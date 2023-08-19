@@ -21,6 +21,7 @@ const Page = () => {
       <div className="z-10 overflow-hidden">
         <Navbar />
       </div>
+      {/* <div className="relative z-0 flex-1 overflow-y-hidden p-8 ml-0 md:ml-[7rem]"> */}
       <div className="relative z-0 flex-1 overflow-y-hidden p-8 ml-0 md:ml-[7rem]">
         {
           selectedClass ? (
