@@ -10,13 +10,15 @@ const Navbar = () => {
         <Link href="/">ARS</Link>
       </div>
       <div className="flex items-center space-x-4">
-        <div className="text-xl">
-          <i className="fa-regular fa-bell text-black"></i>
-        </div>
-        <div className="text-xl">
-          <i className="fa-regular fa-message text-black"></i>
-        </div>
-        <div className="flex items-center space-x-2">
+  <div className="relative">
+    <i className="fa-regular fa-bell text-black"></i>
+    <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full"></span>
+  </div>
+  <div className="relative">
+    <i className="fa-regular fa-message text-black"></i>
+    <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full"></span>
+  </div>
+  <div className="flex items-center space-x-2">
           <Image
             src="/profile-picture.jpeg"
             alt="User Profile"
