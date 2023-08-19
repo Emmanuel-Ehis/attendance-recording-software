@@ -4,9 +4,9 @@ import Link from "next/link";
 
 const Sidebar = () => {
   return (
-    <div className="bg-[#A9EADA] text-white h-screen w-64 py-4 flex flex-col">
+    <div className="bg-[#A9EADA] text-white h-screen w-64 py-9 mt-0 flex flex-col">
       <Link href="/dashboard">
-        <div className="flex items-center space-x-9 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white">
+        <div className="flex items-center space-x-9 px-4 py-2 my-2 m-1 mt-[3rem] rounded bg-white text-black hover:bg-gray-600 hover:text-white">
           <i className="fas fa-tachometer-alt m-1"></i> Dashboard
         </div>
       </Link>

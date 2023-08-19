@@ -1,29 +1,23 @@
 import React from 'react';
 import Navbar from '@/app/components/Navbar';
 import Sidebar from '@/app/components/Sidebar';
+import DashboardComponent from '@/app/components/Dashboard';
 
-// import { About, Explore, GetStarted, Hero } from '../sections';
 
 const Page = () => (
-  <div className="bg-white overflow-hidden">
-    <div className="z-10 position-sticky">
-      <Navbar />
-    </div>
-     <div className="relative z-0">
+  <div className="bg-white overflow-hidden flex">
+    <div className="z-10 w-16">
       <Sidebar />
     </div>
-    {/*
-    <div className="relative z-0">
-      <About />
-      <div className="gradient-03 z-10" />
-      <Explore />
+    <div className="flex-1 flex flex-col">
+    <div className="z-10 overflow-hidden">
+        <Navbar />
+      </div>
+      <div className="relative z-0 flex-1 overflow-y-hidden p-8 ml-[7rem]">
+        <DashboardComponent />
+      </div>
     </div>
-    <div className="relative">
-      <GetStarted />
-      <div className="gradient-04 z-0" />
-    </div>
-    <Footer /> */}
   </div>
-  );
+);
 
 export default Page;

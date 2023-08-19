@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const Navbar = () => {
   return (
-    <nav className="bg-[#A9EADA] text-white p-4 flex justify-between items-center">
+    <nav className="bg-[#A9EADA] p-4 text-white flex justify-between items-center">
       <div className="text-xl font-bold text-black">
         <Link href="/">ARS</Link>
       </div>
