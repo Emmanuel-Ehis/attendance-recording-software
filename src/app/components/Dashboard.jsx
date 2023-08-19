@@ -18,7 +18,7 @@ const Dashboard = ({ setSelectedClass }) => {
         {classes.map((classItem, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg p-4 m-2 flex items-center space-x-4 shadow-md cursor-pointer"
+            className="bg-white rounded-lg p-4 m-2 flex items-center space-x-4 shadow-md cursor-pointer transform hover:scale-105"
             style={{ width: '100%', maxWidth: '30rem' }}
             onClick={() => setSelectedClass(classItem.name)}
           >
@@ -34,7 +34,7 @@ const Dashboard = ({ setSelectedClass }) => {
   ) : classItem.status === 'absent' ? (
     <p className="text-red-600 text-small">You were marked absent by Faculty</p>
   ) : (
-    <button className="bg-green-500 text-white px-2 py-1 rounded-full">
+    <button className="bg-green-500 text-white px-2 py-1 rounded-full hover:underline">
       Mark me present
     </button>
   )}
