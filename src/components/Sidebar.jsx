@@ -2,7 +2,11 @@
 import React from "react";
 import Link from "next/link";
 
-const Sidebar = ({ resetSelectedClass }) => {
+const Sidebar = ({ resetSelectedClass, setSelectedClass }) => {
+  const handleHistoryClick = () => {
+    resetSelectedClass(); // Reset the selectedClass state
+    setSelectedClass('attendancereport'); // Set selectedClass to 'attendance-report' to display the AttendanceReportPage
+  };
   return (
     <div className="bg-[#A9EADA] text-white h-screen w-64 py-9 mt-0 flex flex-col position-sticky">
       <Link href="">
@@ -22,8 +26,10 @@ const Sidebar = ({ resetSelectedClass }) => {
           <i className="far fa-calendar m-1"></i> Calendar
         </div>
       </Link>
-      <Link href="/history">
-        <div className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white">
+      <Link href="">
+        <div className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white"
+          onClick={handleHistoryClick}
+        >
           <i className="fa-solid fa-user-graduate m-1"></i> History
         </div>
       </Link>

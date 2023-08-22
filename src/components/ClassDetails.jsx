@@ -38,16 +38,37 @@ const ClassDetails = ({ className }) => {
             <p className="text-gray-600 mt-[-3rem] hidden md:block">09:00 am - 10:00 am</p>
           </div>
         </div>
-        <div className="bg-green-100 p-4 flex items-center justify-center">
-          <div className="bg-green-500 text-white rounded-full p-2">
-            <i className="fas fa-check-circle text-2xl"></i>
-          </div>
+
+        <div className="bg-green-100 p-4 rounded-lg shadow-md flex flex-col items-center space-y-4">
+        <div className="bg-green-500 text-white rounded-full p-2">
+          <i className="fas fa-check-circle text-2xl"></i>
         </div>
         <p className="text-green-600 text-center">
           Your attendance has been recorded successfully
         </p>
         <div className="flex justify-center">
           <button className="text-black hover:underline bg-green-500 px-5 py-2 rounded-full cursor-pointer transform hover:scale-105">Alright</button>
+        </div>
+      </div>
+        
+      </div>
+      <div className="flex flex-col mt-4 space-y-2">
+        <a
+          href="#"
+          className="text-black hover:underline cursor-pointer flex items-center space-x-2"
+        >
+          See All Today’s Lectures
+          <i className="fas fa-arrow-right m-2 ml-6"></i>
+        </a>
+        <a
+          href="#"
+          className="text-black hover:underline cursor-pointer flex items-center space-x-2"
+        >
+          Check Attendance Report
+          <i className="fas fa-arrow-right m-1 ml-3"></i>
+        </a>
+        <div className="flex justify-end">
+          <button className="text-black hover:underline bg-green-500 px-5 py-2 rounded-full cursor-pointer transform hover:scale-105">Next</button>
         </div>
       </div>
     </div>

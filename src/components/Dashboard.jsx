@@ -2,7 +2,7 @@
 "use client"
 
 import React from 'react';
-import { classes } from '@/app/constants';
+import { classes } from '@/constants';
 
 const Dashboard = ({ setSelectedClass }) => {
   const currentRoute = "Today's Classes";
