@@ -8,7 +8,7 @@ const Sidebar = ({ resetSelectedClass, setSelectedClass }) => {
     setSelectedClass('attendancereport'); // Set selectedClass to 'attendance-report' to display the AttendanceReportPage
   };
   return (
-    <div className="bg-[#A9EADA] text-white h-screen w-64 py-9 mt-0 flex flex-col position-sticky">
+    <div className="bg-[#A9EADA] text-white h-screen w-64 py-9 mt-0 flex flex-col sticky top-0 z-10" style={{ position: 'fixed' }}>
       <Link href="">
         <div className="flex items-center space-x-9 px-4 py-2 my-2 m-1 mt-[3rem] rounded bg-white text-black hover:bg-gray-600 hover:text-white"
           onClick={resetSelectedClass}
