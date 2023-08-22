@@ -26,10 +26,11 @@ const Page = () => {
         {selectedClass === 'attendancereport' ? ( // Render AttendanceReportPage when selectedClass is 'attendance-report'
           <AttendanceReport/>
         ) : selectedClass ? ( // Render ClassDetailsPage when selectedClass is set
-          <ClassDetailsPage className={selectedClass} />
+          <ClassDetailsPage className={selectedClass} resetSelectedClass={resetSelectedClass}/>
         ) : (
           <DashboardComponent setSelectedClass={setSelectedClass} />
-        )}
+        )
+        }
       </div>
     </div>
   </div>
