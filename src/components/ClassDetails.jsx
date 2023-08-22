@@ -1,6 +1,7 @@
 import React from 'react';
 
-const ClassDetails = ({ className }) => {
+const ClassDetails = ({ className,resetSelectedClass }) => {
+
   return (
     <div className="bg-white rounded-lg p-4 shadow-md md:ml-[4rem]">
       <div className="py-0 px-0 mb-10">
@@ -53,20 +54,21 @@ const ClassDetails = ({ className }) => {
         
       </div>
       <div className="flex flex-col mt-4 space-y-2">
-        <a
-          href="#"
+        <div
+          href=""
           className="text-black hover:underline cursor-pointer flex items-center space-x-2"
+          onClick={resetSelectedClass}
         >
           See All Today’s Lectures
           <i className="fas fa-arrow-right m-2 ml-6"></i>
-        </a>
-        <a
+        </div>
+        <div
           href="#"
           className="text-black hover:underline cursor-pointer flex items-center space-x-2"
         >
           Check Attendance Report
           <i className="fas fa-arrow-right m-1 ml-3"></i>
-        </a>
+        </div>
         <div className="flex justify-end">
           <button className="text-black hover:underline bg-green-500 px-5 py-2 rounded-full cursor-pointer transform hover:scale-105">Next</button>
         </div>
