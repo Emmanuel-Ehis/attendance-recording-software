@@ -14,8 +14,8 @@ const Page = () => {
   };
   return(
   <div className="bg-white overflow-hidden flex">
-    <div className="z-10 w-16 hidden md:block">
-    <Sidebar resetSelectedClass={resetSelectedClass} setSelectedClass={setSelectedClass}/>
+    <div className="z-10 w-16 hidden md:block sticky top-0">
+      <Sidebar resetSelectedClass={resetSelectedClass} setSelectedClass={setSelectedClass}/>
     </div>
     <div className="flex-1 flex flex-col">
       <div className="z-10 overflow-hidden">

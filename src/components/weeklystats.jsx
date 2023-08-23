@@ -39,9 +39,7 @@ const Weeklystats = () => {
   return (
     <div className="hidden md:block w-full md:max-w-md lg:max-w-lg xl:max-w-2xl mx-auto">
       <h2 className="text-purple-600 text-sm font-semibold mb-2 mt-5">Weekly Stats</h2>
-      <div className="md:p-4 lg:p-6">
         <Bar data={data} options={options} />
-      </div>
     </div>
   );
 };

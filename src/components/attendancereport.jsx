@@ -3,6 +3,9 @@ import React from "react";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Weeklystats from '@/components/Weeklystats';
+import TrendLineGraph from '@/components/TrendLineGraph';
+import TotalStats from '@/components/TotalStats';
+
 
 const calculateSemesterAttendance = (totalClasses, attendedClasses) => {
   return (attendedClasses / totalClasses) * 100;
@@ -88,12 +91,15 @@ const AttendanceReport = () => {
           </div>
         </div>
       {/* Weekly Stats Bar Graph */}
+      <div className="bg-gray-100 rounded-lg p-4 m-1">
       <div className="mb-6">
         <Weeklystats />
       </div>
-
+      </div>
+      {/* Semester Attendance Progress */}
+      <div className="bg-gray-100 rounded-lg p-4 m-1">
       <div className="mb-6">
-        <h2 className="text-purple-600 text-sm font-semibold mb-2">Semester Attendance Progress</h2>
+        <h2 className="text-purple-600 text-sm font-semibold mb-2 ml-[11rem]">Semester Attendance Progress</h2>
         <div className="w-24 h-24 mx-auto">
           <CircularProgressbar
             value={semesterAttendance}
@@ -106,17 +112,19 @@ const AttendanceReport = () => {
           />
         </div>
       </div>
-
+        </div>  
       {/* Trend in Student Attendance Line Graph */}
+      <div className="bg-gray-100 rounded-lg p-4 m-1">
       <div className="mb-6">
-        {/* Render your trend in student attendance line graph here */}
+        <TrendLineGraph />
       </div>
 
       {/* Total Classes, Days Present, Days Absent */}
       <div className="flex space-x-6">
-        {/* Render total classes, days present, and days absent here */}
+        <TotalStats />
       </div>
   
+      </div>
       </div>
     );
   };
