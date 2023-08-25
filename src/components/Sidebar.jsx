@@ -1,12 +1,23 @@
 // src/app/components/Sidebar.jsx
-import React from "react";
+import React,{useState} from "react";
 import Link from "next/link";
+import PocketBase from "pocketbase";
 
-const Sidebar = ({ resetSelectedClass, setSelectedClass }) => {
+
+
+
+const Sidebar = ({ resetSelectedClass, setSelectedClass, onLogout}) => {
   const handleHistoryClick = () => {
     resetSelectedClass(); // Reset the selectedClass state
     setSelectedClass('attendancereport'); // Set selectedClass to 'attendance-report' to display the AttendanceReportPage
+
   };
+ 
+  const handleLogout=async() =>{
+    const pb = await new PocketBase('http://127.0.0.1:8090');
+    pb.authStore.clear();
+    onLogout();
+  }
   return (
     <div className="bg-[#A9EADA] text-white h-screen w-64 py-9 mt-0 flex flex-col sticky top-0 z-10" style={{ position: 'fixed' }}>
       <Link href="">
@@ -33,8 +44,8 @@ const Sidebar = ({ resetSelectedClass, setSelectedClass }) => {
           <i className="fa-solid fa-user-graduate m-1"></i> History
         </div>
       </Link>
-      <Link href="/logout">
-        <div className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white">
+      <Link href="#">
+        <div onClick={handleLogout} className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white">
           <i className="fas fa-sign-out m-1"></i> Logout
         </div>
       </Link>
