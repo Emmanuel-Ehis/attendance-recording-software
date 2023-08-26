@@ -1,5 +1,5 @@
 "use client"
-import React, {useState}from 'react';
+import React, {useState,useEffect}from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
@@ -7,6 +7,7 @@ import DashboardComponent from '@/components/Dashboard';
 import ClassDetailsPage from '@/components/ClassDetails';
 import AttendanceReport from '@/components/attendancereport';
 import Login from '@/components/login';
+import PocketBase from 'pocketbase'
 
 
 const Page = () => {
@@ -25,6 +26,15 @@ const Page = () => {
   const handleLogout = () => {
     setIsLoggedIn(false); 
   };
+  useEffect(() => {
+    const pb = new PocketBase('http://127.0.0.1:8090');
+//TODO: verify the token for security purposes
+console.log(pb.authStore.model)
+    const token = localStorage.getItem('pocketbase_auth'); 
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <Router>
