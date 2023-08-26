@@ -6,12 +6,7 @@ import PocketBase from 'pocketbase';
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
   const pb = new PocketBase('http://127.0.0.1:8090');
-  
-  
 
-
-  
-  
   useEffect(() => {
    
     async function fetchUserData() {
@@ -42,19 +37,25 @@ const Navbar = () => {
           <i className="fa-regular fa-message text-black transition-colors hover:text-red-500"></i>
           <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
         </div>
-        {userData && (
+        {/* if no user data display login button otherwise userdata */}
+        {!userData ? (
+          <Link href="/login">
+            <button className="bg-black text-white px-4 py-2 rounded">
+              Login
+            </button>
+          </Link>
+        ) : (
           <div className="flex items-center space-x-2">
-            <Image
-              src={userData?.avatarUrl}
-              alt="User Profile"
-              className="w-10 h-10 rounded-full"
-              width={40}
-              height={40}
-            />
-            <div className="flex flex-col">
-              <div className="font-semibold text-black">{userData.name}</div>
-              <div className="text-sm text-gray-400">{userData.email}</div>
+            <div className="relative cursor-pointer transform hover:scale-105">
+              <Image
+                src={userData.avatarUrl}
+                alt="avatar"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
             </div>
+            <div className="font-semibold">{userData.name}</div>
           </div>
         )}
       </div>
@@ -63,3 +64,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
