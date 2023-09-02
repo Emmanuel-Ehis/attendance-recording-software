@@ -3,9 +3,9 @@ import React, {useState,useEffect}from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
-import DashboardComponent from '@/components/Dashboard';
+import Dashboard from '@/components/Dashboard';
 import ClassDetailsPage from '@/components/ClassDetails';
-import AttendanceReport from '@/components/attendancereport';
+import AttendanceReport from '@/components/History';
 import Login from '@/components/login';
 import PocketBase from 'pocketbase'
 
@@ -29,7 +29,7 @@ const Page = () => {
   useEffect(() => {
     const pb = new PocketBase('http://127.0.0.1:8090');
 //TODO: verify the token for security purposes
-console.log(pb.authStore.model)
+
     const token = localStorage.getItem('pocketbase_auth'); 
     if (token) {
       setIsLoggedIn(true);
@@ -50,8 +50,8 @@ console.log(pb.authStore.model)
               </div>
               <div className="relative z-0 flex-1 overflow-y-hidden p-8 ml-0 md:ml-[7rem]">
                 <Routes>
-                  <Route path="/" element={<DashboardComponent setSelectedClass={setSelectedClass} />} />
-                  <Route path="/attendancereport" element={<AttendanceReport />} />
+                  <Route path="/" element={<Dashboard setSelectedClass={setSelectedClass} />} />
+                  <Route path="/History" element={<AttendanceReport />} />
                   <Route path="/classdetails/:className" element={<ClassDetailsPage resetSelectedClass={resetSelectedClass} />} />
                 </Routes>
               </div>

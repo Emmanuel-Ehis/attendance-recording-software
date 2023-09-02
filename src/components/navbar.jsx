@@ -18,7 +18,7 @@ const Navbar = () => {
     
       const data = pb.authStore.model;
    
-      const imageURL=`http://127.0.0.1:8090/api/files/${data.collectionId}/${data.id}/${data.avatar}?token=${pb.authStore.token}`
+      const imageURL=`http://127.0.0.1:8090/api/files/${data.collectionId}/${data.id}/${data.Avatar}?token=${pb.authStore.token}`
       setUserData({
         ...data,
         avatarUrl: imageURL,
@@ -52,7 +52,7 @@ const Navbar = () => {
               height={40}
             />
             <div className="flex flex-col">
-              <div className="font-semibold text-black">{userData.name}</div>
+              <div className="font-semibold text-black">{userData.Name}</div>
               <div className="text-sm text-gray-400">{userData.email}</div>
             </div>
           </div>
