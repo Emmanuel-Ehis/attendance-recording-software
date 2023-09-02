@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PocketBase from 'pocketbase';
+import {Navbar} from '@/components'
 
 const Login = ({onLoginStatusChange}) => {
   const [email, setEmail] = useState('');
@@ -38,9 +39,11 @@ const Login = ({onLoginStatusChange}) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
+    <div className="h-screen w-full flex items-center justify-center bg-gray-100">
+      <div className="justify-center bg-white p-8 rounded shadow-md max-w-md w-full object-center">
+        <div className='text-center'>
         <h1 className="text-2xl font-semibold mb-4">Login</h1>
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -68,12 +71,14 @@ const Login = ({onLoginStatusChange}) => {
               required
             />
           </div>
+          <div className='text-center'>
           <button
             type="submit" onClick={handleSubmit}
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            className="bg-blue-500 text-white py-2 px-4 justify-center rounded hover:bg-blue-600"
           >
             Login
           </button>
+          </div>
         </form>
       </div>
     </div>
