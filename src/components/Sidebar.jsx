@@ -16,11 +16,6 @@ const Sidebar = ({ resetSelectedClass, setSelectedClass }) => {
           <i className="fas fa-tachometer-alt m-1"></i> Dashboard
         </div>
       </Link>
-      <Link href="/lectures">
-        <div className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white">
-          <i className="far fa-calendar-alt m-1"></i> All Lectures Today
-        </div>
-      </Link>
       <Link href="/calendar">
         <div className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white">
           <i className="far fa-calendar m-1"></i> Calendar

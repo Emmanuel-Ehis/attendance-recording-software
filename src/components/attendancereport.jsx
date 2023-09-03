@@ -2,7 +2,7 @@
 import React from "react";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Weeklystats from '@/components/Weeklystats';
+// import Weeklystats from '@/components/Weeklystats';
 import TrendLineGraph from '@/components/TrendLineGraph';
 import TotalStats from '@/components/TotalStats';
 
@@ -91,11 +91,11 @@ const AttendanceReport = () => {
           </div>
         </div>
       {/* Weekly Stats Bar Graph */}
-      <div className="bg-gray-100 rounded-lg p-4 m-1">
+      {/* <div className="bg-gray-100 rounded-lg p-4 m-1">
       <div className="mb-6">
         <Weeklystats />
       </div>
-      </div>
+      </div> */}
       {/* Semester Attendance Progress */}
       <div className="bg-gray-100 rounded-lg p-4 m-1">
       <div className="mb-6">
