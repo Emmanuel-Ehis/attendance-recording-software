@@ -1,15 +1,16 @@
 "use client"
 import React, {useState,useEffect}from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/components/Dashboard';
 import ClassDetailsPage from '@/components/ClassDetails';
 import AttendanceReport from '@/components/History';
+import CalendarPage from '@/components/Calendar';
 import Login from '@/components/login';
 import supabase from '@/DB/Client';
 import Signup from '@/components/SignUp';
-
+import { useRouter } from 'next/router'
 
 const Page = () => {
   const [selectedClass, setSelectedClass] = useState(null);
@@ -37,7 +38,7 @@ const Page = () => {
   }, []);
 
   return (
-    <Router>
+    <BrowserRouter>
       <div className="bg-white overflow-hidden flex">
         {IsLoggedIn ? (
           <>
@@ -47,23 +48,26 @@ const Page = () => {
             <div className="flex-1 flex flex-col">
               <div className="z-10 overflow-hidden">
                 <Navbar />
+               
               </div>
               <div className="relative z-0 flex-1 overflow-y-hidden p-8 ml-0 md:ml-[7rem]">
                 <Routes>
-                  <Route path="/" element={<Dashboard setSelectedClass={setSelectedClass} />} />
+                  <Route path="/" element={<Dashboard setSelectedClass={setSelectedClass} />}
+                   />
+                 
                   <Route path="/History" element={<AttendanceReport />} />
-                  <Route path="/classdetails/:className" element={<ClassDetailsPage resetSelectedClass={resetSelectedClass} />} />
+                  <Route path="/Calendar" element={<ClassDetailsPage resetSelectedClass={resetSelectedClass} />} />
                 </Routes>
               </div>
             </div>
           </>
         ) : (
           <Routes>
-            <Route path="/" element={<Login onLoginStatusChange={handleLoginStatusChange}/>} />
+            <Route path="/Login" element={<Login onLoginStatusChange={handleLoginStatusChange}/>} />
           </Routes>
         )}
       </div>
-    </Router>
+    </BrowserRouter>
   );
 };
 

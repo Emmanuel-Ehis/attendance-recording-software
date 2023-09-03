@@ -5,12 +5,22 @@ import 'react-circular-progressbar/dist/styles.css';
 import Weeklystats from '@/components/Weeklystats';
 import TrendLineGraph from '@/components/TrendLineGraph';
 import TotalStats from '@/components/TotalStats';
+import supabase from "@/DB/Client";
+import User from "@/DB/User";
 
 
 const calculateSemesterAttendance = (totalClasses, attendedClasses) => {
   return (attendedClasses / totalClasses) * 100;
 };
-const AttendanceReport = () => {
+const History = () => {
+
+  async function getAttendance() {
+    const userID = await User();
+    const { data: attendance, error } = await supabase
+      .from('AttendanceRecords')
+      .select(`*`)
+
+  }
   const totalClasses = 60; // Total classes in the semester
   const attendedClasses = 32; // Attended classes by the student
 
@@ -129,5 +139,5 @@ const AttendanceReport = () => {
     );
   };
   
-  export default AttendanceReport;
+  export default History;
   

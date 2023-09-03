@@ -26,6 +26,7 @@
     "pocketbase": "^0.16.0",
     "postcss": "8.4.28",
     "react": "18.2.0",
+    "react-big-calendar": "^1.8.2",
     "react-chartjs-2": "^5.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "18.2.0",

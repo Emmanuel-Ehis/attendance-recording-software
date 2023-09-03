@@ -1,14 +1,14 @@
 // src/app/components/Dashboard.jsx
 "use client"
 import React, { useEffect, useState } from 'react';
-import run from '@/DB/Client';
+import user from '@/DB/User';
 import supabase from '@/DB/Client';
 
 const PocketBase = require("pocketbase/cjs");
 
 
 const Dashboard = ({ setSelectedClass }) => {
-  const pb = new PocketBase('http://127.0.0.1:8090');
+ 
   const currentRoute = "Today's Classes";
 
   const [fetchedData, setFetchedData] = useState([]);
@@ -21,33 +21,24 @@ const Dashboard = ({ setSelectedClass }) => {
       // Create an object with the desired properties from the item
       
       let classDetail = {
-        ClassID: item.SubjectID, // Replace with the actual property name for class name
-        Start_time: item.StartTime,
-        End_time: item.EndTime,
+       Start: item.StartTime,
+        End: item.EndTime,
+        Name: item.Subjects.Name,
+        initals: item.Subjects.Initials,
+        ClassID: item.SubjectID
+
+
+
        
       };
-      const other= await getREST(classDetail.ClassID)
-console.log("other",other)
-      const add={
-        ...other,
-        ...classDetail
-      }
+   
       
-      results.push(add);
+      results.push(classDetail);
     }
     // Return the results array
     return results;
   }
-async function getREST(id){
-  const record =  await pb.collection('Subject').getOne(id);
- const classRecords={
-  initals:record.Initials,
-  Name:record.Name
 
- }
- return classRecords
- 
-}
 function getCurrentDayOfWeek() {
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const currentDate = new Date();
@@ -60,27 +51,26 @@ function getCurrentDayOfWeek() {
     try {
    
       const currentDayOfWeek = getCurrentDayOfWeek();
+    const userId = await  user()
+
+  
       
-      
+    const { data: sessions, error } = await supabase
+    .from('Sessions')
+    .select(`*,Subjects(Name, Initials)`)
+    .eq('WeekDay', currentDayOfWeek)
+    .eq('userID', userId)
+    
 
-      const params = `?expand=SubjectID.Name&filter=(WeekDay='${currentDayOfWeek}')`;
-      const apiUrl = `http://127.0.0.1:8090/api/collections/Sessions/records${params}`;
-
-      const response = await fetch(apiUrl);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const result = await getClassDetails(data.items);
- 
-console.log (result);
-      setFetchedData(result); 
+    if (error) {
+      throw error;
+    }
+const results = await getClassDetails(sessions);
+      setFetchedData(results); 
      
       
     } catch (error) {
-      console.error('Fetch error:', error);
+      console.error('DB error', error);
       // Handle errors here
     }
   }
@@ -128,12 +118,12 @@ console.log (result);
             <div className="flex flex-col flex-grow">
               <p className="font-semibold text-black">{classItem.Name}</p>
               <p className="text-gray-600 md:hidden">
-                {classItem.Start_time} - {classItem.End_time}
+                {classItem.Start} - {classItem.End}
               </p>
               {renderClassStatus(classItem)}
             </div>
             <div className="flex items-center mt-[-2rem]">
-              <p className="text-gray-600 hidden md:block">{classItem.Start_time}</p>
+              <p className="text-gray-600 hidden md:block">{classItem.Start}</p>
             </div>
           </div>
         ))}
