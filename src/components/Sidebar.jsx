@@ -1,7 +1,7 @@
 // src/app/components/Sidebar.jsx
 import React,{useState} from "react";
 import Link from "next/link";
-import PocketBase from "pocketbase";
+import supabase from "@/DB/Client";
 
 
 
@@ -14,9 +14,13 @@ const Sidebar = ({ resetSelectedClass, setSelectedClass, onLogout}) => {
   };
  
   const handleLogout=async() =>{
-    const pb = await new PocketBase('http://127.0.0.1:8090');
-    pb.authStore.clear();
+    let { error } = await supabase.auth.signOut()
+if(error){
+  console.log(error)
+}
     onLogout();
+
+
   }
   return (
     <div className="bg-[#A9EADA] text-white h-screen w-64 py-9 mt-0 flex flex-col sticky top-0 z-10" style={{ position: 'fixed' }}>

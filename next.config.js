@@ -16,7 +16,7 @@ module.exports = {
   },
   
   images: {
-    domains: ['127.0.0.1'], 
+    domains: ['i.pravatar.cc'], 
   },
   pageExtensions: ['jsx', 'js'],
   webpack(config, options) {

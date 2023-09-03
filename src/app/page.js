@@ -7,7 +7,8 @@ import Dashboard from '@/components/Dashboard';
 import ClassDetailsPage from '@/components/ClassDetails';
 import AttendanceReport from '@/components/History';
 import Login from '@/components/login';
-import PocketBase from 'pocketbase'
+import supabase from '@/DB/Client';
+import Signup from '@/components/SignUp';
 
 
 const Page = () => {
@@ -27,10 +28,9 @@ const Page = () => {
     setIsLoggedIn(false); 
   };
   useEffect(() => {
-    const pb = new PocketBase('http://127.0.0.1:8090');
-//TODO: verify the token for security purposes
+  
 
-    const token = localStorage.getItem('pocketbase_auth'); 
+    const token = localStorage.getItem('sb-hyaiklckhkyutgrxxyft-auth-token'); 
     if (token) {
       setIsLoggedIn(true);
     }

@@ -1,6 +1,8 @@
 // src/app/components/Dashboard.jsx
 "use client"
 import React, { useEffect, useState } from 'react';
+import run from '@/DB/Client';
+import supabase from '@/DB/Client';
 
 const PocketBase = require("pocketbase/cjs");
 
@@ -85,6 +87,7 @@ console.log (result);
 
   useEffect(() => {
     obtainTodayClasses();
+   
   }, []);
 
   // Function to render class status based on the classItem status

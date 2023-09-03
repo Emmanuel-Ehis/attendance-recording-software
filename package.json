@@ -10,14 +10,18 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.33.1",
     "airbnb": "^0.0.2",
+    "appwrite": "^12.0.0",
     "autoprefixer": "10.4.15",
     "body": "^5.1.0",
     "body-parser": "^1.20.2",
     "chart.js": "^4.3.3",
+    "dotenv": "^16.3.1",
     "eslint-config-next": "13.4.18",
     "eslint-plugin-prettier": "^5.0.0",
     "fs": "^0.0.1-security",
+    "mongodb": "^6.0.0",
     "next": "13.4.18",
     "pocketbase": "^0.16.0",
     "postcss": "8.4.28",
