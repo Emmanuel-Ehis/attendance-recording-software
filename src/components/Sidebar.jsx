@@ -1,7 +1,7 @@
 // src/app/components/Sidebar.jsx
 import React,{useState} from "react";
 import Link from "next/link";
-import PocketBase from "pocketbase";
+import supabase from "@/DB/Client";
 
 
 
@@ -14,25 +14,33 @@ const Sidebar = ({ resetSelectedClass, setSelectedClass, onLogout}) => {
   };
  
   const handleLogout=async() =>{
-    const pb = await new PocketBase('http://127.0.0.1:8090');
-    pb.authStore.clear();
-    onLogout();
+    let { error } = await supabase.auth.signOut()
+if(error){
+  console.log(error)
+}
+else{
+  onLogout();
+}
+  
+
+
   }
   return (
     <div className="bg-[#A9EADA] text-white h-screen w-64 py-9 mt-0 flex flex-col sticky top-0 z-10" style={{ position: 'fixed' }}>
-      <Link href="">
+      <Link href="/">
         <div className="flex items-center space-x-9 px-4 py-2 my-2 m-1 mt-[3rem] rounded bg-white text-black hover:bg-gray-600 hover:text-white"
           onClick={resetSelectedClass}
         >
           <i className="fas fa-tachometer-alt m-1"></i> Dashboard
         </div>
       </Link>
-      <Link href="/calendar">
+     
+      <Link href="/Calendar">
         <div className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white">
           <i className="far fa-calendar m-1"></i> Calendar
         </div>
       </Link>
-      <Link href="">
+      <Link href="/History">
         <div className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white"
           onClick={handleHistoryClick}
         >

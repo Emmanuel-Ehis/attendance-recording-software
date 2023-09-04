@@ -1,16 +1,18 @@
 "use client"
 import React, {useState,useEffect}from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
-import DashboardComponent from '@/components/Dashboard';
+import Dashboard from '@/components/Dashboard';
 import ClassDetailsPage from '@/components/ClassDetails';
-import AttendanceReport from '@/components/attendancereport';
+import AttendanceReport from '@/components/History';
+import CalendarPage from '@/components/Calendar';
 import Login from '@/components/login';
-import PocketBase from 'pocketbase'
-
+import supabase from '@/DB/Client';
+import Signup from '@/components/SignUp';
 
 const Page = () => {
+
   const [selectedClass, setSelectedClass] = useState(null);
   const [IsLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -27,17 +29,16 @@ const Page = () => {
     setIsLoggedIn(false); 
   };
   useEffect(() => {
-    const pb = new PocketBase('http://127.0.0.1:8090');
-//TODO: verify the token for security purposes
-console.log(pb.authStore.model)
-    const token = localStorage.getItem('pocketbase_auth'); 
+  
+
+    const token = localStorage.getItem('sb-hyaiklckhkyutgrxxyft-auth-token'); 
     if (token) {
       setIsLoggedIn(true);
     }
   }, []);
 
   return (
-    <Router>
+    <BrowserRouter>
       <div className="bg-white overflow-hidden flex">
         {IsLoggedIn ? (
           <>
@@ -47,12 +48,13 @@ console.log(pb.authStore.model)
             <div className="flex-1 flex flex-col">
               <div className="z-10 overflow-hidden">
                 <Navbar />
+               
               </div>
               <div className="relative z-0 flex-1 overflow-y-hidden p-8 ml-0 md:ml-[7rem]">
                 <Routes>
-                  <Route path="/" element={<DashboardComponent setSelectedClass={setSelectedClass} />} />
-                  <Route path="/attendancereport" element={<AttendanceReport />} />
-                  <Route path="/classdetails/:className" element={<ClassDetailsPage resetSelectedClass={resetSelectedClass} />} />
+                  <Route path="/" element={<Dashboard setSelectedClass={setSelectedClass} />}
+                   />
+               
                 </Routes>
               </div>
             </div>
@@ -63,7 +65,7 @@ console.log(pb.authStore.model)
           </Routes>
         )}
       </div>
-    </Router>
+    </BrowserRouter>
   );
 };
 

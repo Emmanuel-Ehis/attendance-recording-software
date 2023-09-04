@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import PocketBase from 'pocketbase';
-import {Navbar} from '@/components'
+import supabase from '@/DB/Client';
+
 
 const Login = ({onLoginStatusChange}) => {
   const [email, setEmail] = useState('');
@@ -19,19 +19,25 @@ const Login = ({onLoginStatusChange}) => {
     e.preventDefault();
    
 
-    const pb = new PocketBase('http://127.0.0.1:8090');
     try {
-      const authData = await pb.collection('Students').authWithPassword(
-        email,
-        password
-      );
 
-      if (pb.authStore.isValid) {
+      let { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      })
+
+      if (error) {
+        console.log(error)
+        throw error;
+
+      }
+console.log(data)
+  
       
         onLoginStatusChange(true);
-      }
+      
     } catch (error) {
-     prompt('Authentication error:', error);
+   console.log('Authentication error:', error);
      
     }
   
