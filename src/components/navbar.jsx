@@ -41,7 +41,7 @@ const Navbar = () => {
 
     fetchUserData();
   }, []);
-console.log(userData)
+
   return (
     <nav className="bg-[#A9EADA] p-4 text-white flex justify-between items-center">
       <div className="text-xl font-bold text-black">

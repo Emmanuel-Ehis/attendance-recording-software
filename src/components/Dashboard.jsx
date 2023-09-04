@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import user from '@/DB/User';
 import supabase from '@/DB/Client';
+import { useRouter } from 'next/router';
 
 
 
@@ -20,52 +21,32 @@ const Dashboard = ({ setSelectedClass }) => {
   
     for (let item of items) {
  
-     
-     status= await getAttendanceStatus(item.SubjectID);
-  
-  for (const i of status){
-    status=i.Status;
+      const currentDate = new Date();
+      const dateString = currentDate.toISOString().split('T')[0];
+      const userId = await user();
+      const attendanceData = await getAttendanceStatus(item.SubjectID, userId, dateString);
 
-  }
-     
+      const status = attendanceData[0]?.Status || ''; // Extract the status if available, or set an empty string if not
+
+      console.log(status);
       let classDetail = {
-       Start: item.StartTime,
+        Start: item.StartTime,
         End: item.EndTime,
         Name: item.Subjects.Name,
         initals: item.Subjects.Initials,
         ClassID: item.SubjectID,
         status: status,
+      }
+    
 
-
-       
-      };
-   
-      
+  
       results.push(classDetail);
     }
-   
-
+  
     return results;
   }
 
-  async function getAttendanceStatus(ClassID) {
-    const userId = await user();
-    const { data: attendance, error } = await supabase
-      .from('AttendanceRecords')
-      .select(`*`)
-      .eq('userID', userId)
-      .eq('SubjectID', ClassID);
 
-    if (error) {
-      throw error;
-    }
-
-    if (attendance && attendance.length > 0) {
-      return attendance
-    } else {
-      return '';
-    }
-  }
 
 function getCurrentDayOfWeek() {
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -73,7 +54,20 @@ function getCurrentDayOfWeek() {
   const dayIndex = currentDate.getDay();
   return daysOfWeek[dayIndex];
 }
+async function getAttendanceStatus(ClassID, userId, dateString) {
+  const { data: attendance, error } = await supabase
+    .from('AttendanceRecords')
+    .select('*')
+    .eq('userID', userId)
+    .eq('SubjectID', ClassID)
+    .eq('Date', dateString);
 
+  if (error) {
+    throw error;
+  }
+
+  return attendance || [];
+}
   async function obtainTodayClasses() {
     
     try {
@@ -104,13 +98,14 @@ const results = await getClassDetails(sessions);
     }
   }
 
-  async function UpdateStatus() {
+  async function UpdateStatus(SubjectID) {
     const userId = await user();
-
+    const currentDate = new Date();
+    const dateString = currentDate.toISOString().split('T')[0];
     const { data, error } = await supabase
     .from('AttendanceRecords')
     .insert([
-      { Role:'1', Status: 'Present', SubjectID:fetchedData.Name , userID: userId },
+      { RoleID:'1', Status: 'Present', SubjectID:SubjectID , userID: userId, Date: dateString},
     ])
     .select()
     if (error) {
@@ -138,7 +133,7 @@ const results = await getClassDetails(sessions);
     } else {
       return (
         <button
-          onClick={UpdateStatus}
+          onClick={() => UpdateStatus(classItem.ClassID)} // Pass classItem.ClassID as an argument
           className="bg-green-500 text-white px-2 py-1 rounded-full hover:underline"
           disabled={classItem.status === 'Absent'}
         >
@@ -147,6 +142,7 @@ const results = await getClassDetails(sessions);
       );
     }
   };
+
 
 
 

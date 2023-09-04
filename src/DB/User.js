@@ -7,10 +7,11 @@ let id = null;
 
 const User = async () => {
     const { data, error } = await supabase.auth.getUser();
-   
+   console.log(data);
 
     if (data) {
       const { user } = data;
+      console.log('user',user)
       OriginalID = user.id;
 
       let { data: Users, error } = await supabase

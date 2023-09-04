@@ -7,24 +7,87 @@ import TrendLineGraph from '@/components/TrendLineGraph';
 import TotalStats from '@/components/TotalStats';
 import supabase from "@/DB/Client";
 import User from "@/DB/User";
+import { useState } from "react";
 
 
-const calculateSemesterAttendance = (totalClasses, attendedClasses) => {
-  return (attendedClasses / totalClasses) * 100;
-};
-const History = () => {
 
-  async function getAttendance() {
-    const userID = await User();
-    const { data: attendance, error } = await supabase
-      .from('AttendanceRecords')
-      .select(`*`)
 
+const History = (oncall) => { 
+  const [attendedClasses, setAttendedClasses] = useState(0); 
+  const [attendedTodayClasses, setAttendedTodayClasses] = useState(0);
+  const [absentTodayClasses, setAbsentTodayClasses] = useState(0);
+  const calculateSemesterAttendance = (totalClasses, attendedClasses) => {
+    return (attendedClasses / totalClasses) * 100;
+  };
+
+  
+
+
+const attended=async(status)=>{
+  const userID = await User();
+  const { data: attendance, error } =await supabase
+    .from('AttendanceRecords')
+    .select (`{count:exact}`)
+    .eq('userID', userID)
+    .eq('Status', status)
+
+  if (error) {
+    throw error;
   }
-  const totalClasses = 60; // Total classes in the semester
-  const attendedClasses = 32; // Attended classes by the student
+  return attendance || [];
+}
 
+attended('Present').then((attendance) => {
+  setAttendedClasses(attendance.length)
+});
+attended('Absent').then((report) => {
+  attendedToday().then((attendanceToday) => {
+    const sessions=attendanceToday.sessions.length
+const percentile=report.length/sessions*100
+setAbsentTodayClasses(percentile)
+  })
+ 
+  
+});
+const attendedToday=async()=>{
+  const userID = await User();
+  const currentDate = new Date();
+  const dateString = currentDate.toISOString().split('T')[0];
+
+  const { data: sessions, error } =await supabase
+    .from('Sessions')
+    .select (`{count:exact}`)
+    .eq('userID', userID)
+    .eq('Date', dateString)
+
+  if (error) {
+    throw error;
+  }
+  const { data: attendance, error1 } =await supabase
+    .from('AttendanceRecords')
+    .select (`{count:exact}`)
+    .eq('userID', userID)
+    .eq('Status', 'Present')
+    .eq('Date', dateString)
+
+
+  return {attendance:attendance,sessions:sessions};
+}
+
+
+attendedToday().then((attendanceToday) => {
+const sessions=attendanceToday.sessions.length
+const attendance=attendanceToday.attendance.length
+const percentage=attendance/sessions*100
+setAttendedTodayClasses(percentage)
+})
+ 
+  const totalClasses=4; // Total classes in the semester
+
+console.log('classes',attendedClasses)
   const semesterAttendance = calculateSemesterAttendance(totalClasses, attendedClasses);
+  
+  console.log("semester",semesterAttendance)
     return (
       <div className="bg-white rounded-lg p-4 shadow-md md:ml-[4rem]">
         <div className="py-0 px-0 mb-10">
@@ -40,8 +103,8 @@ const History = () => {
             {/* Graph */}
             <div className="w-12 h-12">
               <CircularProgressbar
-                value={70} // Set the value for progress (change as needed)
-                text={`${70}%`} // Display percentage
+                value={attendedTodayClasses} // Set the value for progress (change as needed)
+                text={`${attendedTodayClasses}%`} // Display percentage
                 styles={buildStyles({
                   textColor: 'green', // Color of the percentage text
                   pathColor: 'green', // Color of the progress path
@@ -49,10 +112,7 @@ const History = () => {
                 })}
               />
             </div>
-            <div className="flex-grow">
-              <p className="text-black font-semibold text-lg">10</p>
-              <p className="text-green-600">12% increase</p>
-            </div>
+           
           </div>
         </div>
   
@@ -62,8 +122,8 @@ const History = () => {
             <div className="flex items-center space-x-2">
             <div className="w-12 h-12">
             <CircularProgressbar
-              value={5} // Set the value for progress (change as needed)
-              text={`${5}%`} // Display percentage
+              value={absentTodayClasses} // Set the value for progress (change as needed)
+              text={`${absentTodayClasses}%`} // Display percentage
               styles={buildStyles({
                 textColor: 'red', // Color of the percentage text
                 pathColor: 'red', // Color of the progress path
@@ -71,10 +131,7 @@ const History = () => {
               })}
             />
           </div>
-          <div className="flex-grow">
-            <p className="text-black font-semibold text-lg">5</p>
-            <p className="text-red-600">5% decrease</p>
-          </div>
+         
           </div>
         </div>
   
