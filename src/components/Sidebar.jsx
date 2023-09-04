@@ -1,23 +1,25 @@
 // src/app/components/Sidebar.jsx
-import React from "react";
-import Link from "next/link";
+import React from 'react';
+import Link from 'next/link';
 
-const Sidebar = ({ resetSelectedClass, setSelectedClass }) => {
+const Sidebar = ({ resetSelectedClass, setSelectedClass,openCalendar}) => {
   const handleHistoryClick = () => {
     resetSelectedClass(); // Reset the selectedClass state
     setSelectedClass('attendancereport'); // Set selectedClass to 'attendance-report' to display the AttendanceReportPage
   };
   return (
     <div className="bg-[#A9EADA] text-white h-screen w-64 py-9 mt-0 flex flex-col sticky top-0 z-10" style={{ position: 'fixed' }}>
-      <Link href="">
+      <Link href="/">
         <div className="flex items-center space-x-9 px-4 py-2 my-2 m-1 mt-[3rem] rounded bg-white text-black hover:bg-gray-600 hover:text-white"
           onClick={resetSelectedClass}
         >
           <i className="fas fa-tachometer-alt m-1"></i> Dashboard
         </div>
       </Link>
-      <Link href="/calendar">
-        <div className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white">
+      <Link href="">
+        <div className="flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white"
+          onClick={openCalendar}
+        >
           <i className="far fa-calendar m-1"></i> Calendar
         </div>
       </Link>
