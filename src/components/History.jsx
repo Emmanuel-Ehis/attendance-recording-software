@@ -104,7 +104,7 @@ console.log('classes',attendedClasses)
             <div className="w-12 h-12">
               <CircularProgressbar
                 value={attendedTodayClasses} // Set the value for progress (change as needed)
-                text={`${attendedTodayClasses}%`} // Display percentage
+                text={`${attendedTodayClasses.toFixed(2)}%`} // Display percentage
                 styles={buildStyles({
                   textColor: 'green', // Color of the percentage text
                   pathColor: 'green', // Color of the progress path
@@ -123,7 +123,7 @@ console.log('classes',attendedClasses)
             <div className="w-12 h-12">
             <CircularProgressbar
               value={absentTodayClasses} // Set the value for progress (change as needed)
-              text={`${absentTodayClasses}%`} // Display percentage
+              text={`${absentTodayClasses.toFixed(2)}%`} // Display percentage
               styles={buildStyles({
                 textColor: 'red', // Color of the percentage text
                 pathColor: 'red', // Color of the progress path

@@ -57,23 +57,23 @@ const Sidebar = ({
         <div className="flex items-center space-x-9 px-4 py-2 my-0 m-1 mt-[3rem] rounded bg-white text-black hover:bg-gray-600 hover:text-white"
           onClick={handleDashboardClick}
         >
-          <i className="fas fa-tachometer-alt m-1"></i> Dashboard
+           <i className="fas fa-tachometer-alt m-1"></i> Dashboard
         </div>
       </Link>
       <Link href="/">
         <div
           className={`flex items-center space-x-9 px-4 py-2 my-2  m-1 mt-[1rem] rounded bg-white text-black hover:bg-gray-600 hover:text-white ${
-            isCalendarActive ? "bg-gray-600 text-white" : ""
+            isCalendarActive ? "bg-gray-600 text-black" : ""
           }`}
           onClick={handleCalendarClick}
         >
-          <i className="fas fa-tachometer-alt m-1"></i> Calendar
+           <i className="far fa-calendar m-1"></i> Calendar
         </div>
       </Link>
       <Link href="/">
         <div
           className={`flex items-center space-x-2 px-4 py-2 my-2 m-1 rounded bg-white text-black hover:bg-gray-600 hover:text-white ${
-            isHistoryActive ? "bg-gray-600 text-white" : ""
+            isHistoryActive ? "bg-gray-600 text-black" : ""
           }`}
           onClick={handleHistoryClick}
         >
