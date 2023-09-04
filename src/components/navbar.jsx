@@ -41,7 +41,7 @@ const Navbar = () => {
 
     fetchUserData();
   }, []);
-
+console.log(userData)
   return (
     <nav className="bg-[#A9EADA] p-4 text-white flex justify-between items-center">
       <div className="text-xl font-bold text-black">
@@ -67,10 +67,10 @@ const Navbar = () => {
           />
           <div className="flex flex-col">
             <div className="font-semibold text-black">
-              {userData ? userData.Name : 'Loading...'}
+              {userData ? userData.email: 'emanuel@gmail.com'}
             </div>
             <div className="text-sm text-gray-400">
-              {userData ? userData.email : 'Loading...'}
+              {userData ? userData.Name : 'emanuel Oarizowam'}
             </div>
           </div>
         </div>

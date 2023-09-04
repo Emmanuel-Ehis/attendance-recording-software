@@ -10,9 +10,9 @@ import CalendarPage from '@/components/Calendar';
 import Login from '@/components/login';
 import supabase from '@/DB/Client';
 import Signup from '@/components/SignUp';
-import { useRouter } from 'next/router'
 
 const Page = () => {
+
   const [selectedClass, setSelectedClass] = useState(null);
   const [IsLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -54,16 +54,14 @@ const Page = () => {
                 <Routes>
                   <Route path="/" element={<Dashboard setSelectedClass={setSelectedClass} />}
                    />
-                 
-                  <Route path="/History" element={<AttendanceReport />} />
-                  <Route path="/Calendar" element={<ClassDetailsPage resetSelectedClass={resetSelectedClass} />} />
+               
                 </Routes>
               </div>
             </div>
           </>
         ) : (
           <Routes>
-            <Route path="/Login" element={<Login onLoginStatusChange={handleLoginStatusChange}/>} />
+            <Route path="/" element={<Login onLoginStatusChange={handleLoginStatusChange}/>} />
           </Routes>
         )}
       </div>

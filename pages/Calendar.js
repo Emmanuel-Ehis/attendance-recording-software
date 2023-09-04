@@ -14,7 +14,7 @@ export default function CalendarPage() {
             <Navbar />
           </div>
           <div className="relative z-0 flex-1 overflow-y-hidden p-8 ml-0 md:ml-[7rem]">
-            <Calendar />
+            <Calendar/>
           </div>
         </div>
       </div>

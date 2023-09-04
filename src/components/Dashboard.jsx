@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import user from '@/DB/User';
 import supabase from '@/DB/Client';
 
-const PocketBase = require("pocketbase/cjs");
+
 
 
 const Dashboard = ({ setSelectedClass }) => {
@@ -12,21 +12,29 @@ const Dashboard = ({ setSelectedClass }) => {
   const currentRoute = "Today's Classes";
 
   const [fetchedData, setFetchedData] = useState([]);
+  const [attendanceStatus, setAttendanceStatus] = useState('');
   async function getClassDetails(items) {
     // Create an empty array to store the results
     let results = [];
+    let status='';
   
     for (let item of items) {
-      console.log(item);
-      // Create an object with the desired properties from the item
-      
+ 
+     
+     status= await getAttendanceStatus(item.SubjectID);
+  
+  for (const i of status){
+    status=i.Status;
+
+  }
+     
       let classDetail = {
        Start: item.StartTime,
         End: item.EndTime,
         Name: item.Subjects.Name,
         initals: item.Subjects.Initials,
-        ClassID: item.SubjectID
-
+        ClassID: item.SubjectID,
+        status: status,
 
 
        
@@ -35,8 +43,28 @@ const Dashboard = ({ setSelectedClass }) => {
       
       results.push(classDetail);
     }
-    // Return the results array
+   
+
     return results;
+  }
+
+  async function getAttendanceStatus(ClassID) {
+    const userId = await user();
+    const { data: attendance, error } = await supabase
+      .from('AttendanceRecords')
+      .select(`*`)
+      .eq('userID', userId)
+      .eq('SubjectID', ClassID);
+
+    if (error) {
+      throw error;
+    }
+
+    if (attendance && attendance.length > 0) {
+      return attendance
+    } else {
+      return '';
+    }
   }
 
 function getCurrentDayOfWeek() {
@@ -66,6 +94,7 @@ function getCurrentDayOfWeek() {
       throw error;
     }
 const results = await getClassDetails(sessions);
+
       setFetchedData(results); 
      
       
@@ -75,27 +104,51 @@ const results = await getClassDetails(sessions);
     }
   }
 
+  async function UpdateStatus() {
+    const userId = await user();
+
+    const { data, error } = await supabase
+    .from('AttendanceRecords')
+    .insert([
+      { Role:'1', Status: 'Present', SubjectID:fetchedData.Name , userID: userId },
+    ])
+    .select()
+    if (error) {
+      throw error;
+    }
+
+    if (data) {
+      alert('Attendance marked successfully');
+    }
+
+  }
+
   useEffect(() => {
     obtainTodayClasses();
    
   }, []);
 
-  // Function to render class status based on the classItem status
   const renderClassStatus = (classItem) => {
-    if (classItem.status === 'present') {
-      return <p className="text-green-600">You were marked present</p>;
-    } else if (classItem.status === 'cancelled') {
+    if (classItem.status === 'Present') {
+      return <p className="text-green-600">You are marked present</p>;
+    } else if (classItem.status === 'Cancelled') {
       return <p className="text-red-600">Class Cancelled</p>;
-    } else if (classItem.status === 'absent') {
+    } else if (classItem.status === 'Absent') {
       return <p className="text-red-600 text-small">You were marked absent by Faculty</p>;
     } else {
       return (
-        <button className="bg-green-500 text-white px-2 py-1 rounded-full hover:underline">
+        <button
+          onClick={UpdateStatus}
+          className="bg-green-500 text-white px-2 py-1 rounded-full hover:underline"
+          disabled={classItem.status === 'Absent'}
+        >
           Mark me present
         </button>
       );
     }
   };
+
+
 
   return (
     <div className="p-8 mt-[-4rem]">

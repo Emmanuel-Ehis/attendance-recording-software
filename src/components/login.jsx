@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import supabase from '@/DB/Client';
 
+
 const Login = ({onLoginStatusChange}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,12 +26,18 @@ const Login = ({onLoginStatusChange}) => {
         password: password
       })
 
+      if (error) {
+        console.log(error)
+        throw error;
+
+      }
+console.log(data)
   
       
         onLoginStatusChange(true);
       
     } catch (error) {
-     prompt('Authentication error:', error);
+   console.log('Authentication error:', error);
      
     }
   

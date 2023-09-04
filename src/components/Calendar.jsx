@@ -14,10 +14,9 @@ const Calendar = () => {
   const handleDateClick = (date) => {
     setSelectedDate(date);
   };
-
   return (
     <div className="container mx-auto mt-8">
-      <h1 className="text-2xl font-semibold mb-4">Class Calendar</h1>
+      <h1 className="text-2xl font-semibold mb-4">Personal calendar</h1>
       <div className="grid grid-cols-7 gap-2">
         {Array.from({ length: 30 }, (_, i) => {
           const currentDate = new Date();
