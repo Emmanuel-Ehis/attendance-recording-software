@@ -1,93 +1,125 @@
-
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-// import Weeklystats from '@/components/Weeklystats';
 import TrendLineGraph from '@/components/TrendLineGraph';
-import TotalStats from '@/components/TotalStats';
-import supabase from "@/DB/Client";
-import User from "@/DB/User";
-import { useState } from "react";
+import supabase from '@/DB/Client';
+import User from '@/DB/User';
 
-
-
-
-const History = (oncall) => { 
-  const [attendedClasses, setAttendedClasses] = useState(0); 
+const History = () => {
+  const [semesterClasses, setSemesterClasses] = useState({
+    result: 0,
+    present: 0,
+    absent: 0,
+    classes: 0,
+  });
   const [attendedTodayClasses, setAttendedTodayClasses] = useState(0);
   const [absentTodayClasses, setAbsentTodayClasses] = useState(0);
-  const calculateSemesterAttendance = (totalClasses, attendedClasses) => {
-    return (attendedClasses / totalClasses) * 100;
-  };
 
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      const semesterStart = '2023-8-1';
+      const semesterEnd = '2024-7-31';
+      const userID = await User();
 
+      // Fetch total classes for the semester
+      async function sessions() {
+        const { data: sessions, error } = await supabase
+          .from('Sessions')
+          .select('*')
+          .eq('userID', userID)
+          .gte('Date', semesterStart)
+          .lte('Date', semesterEnd)
+          .order('Date');
 
-const attended=async(status)=>{
-  const userID = await User();
-  const { data: attendance, error } =await supabase
-    .from('AttendanceRecords')
-    .select (`{count:exact}`)
-    .eq('userID', userID)
-    .eq('Status', status)
+        if (error) {
+          console.error('Error fetching sessions:', error.message);
+          return 0;
+        } else {
+          return sessions.length;
+        }
+      }
 
-  if (error) {
-    throw error;
-  }
-  return attendance || [];
-}
+      // Fetch attended classes for the semester
+      const attended = async (status) => {
+        const { data: attendance, error } = await supabase
+          .from('AttendanceRecords')
+          .select('*')
+          .gte('Date', semesterStart)
+          .lte('Date', semesterEnd)
+          .eq('userID', userID)
+          .eq('Status', status);
 
-attended('Present').then((attendance) => {
-  setAttendedClasses(attendance.length)
-});
-attended('Absent').then((report) => {
-  attendedToday().then((attendanceToday) => {
-    const sessions=attendanceToday.sessions.length
-const percentile=report.length/sessions*100
-setAbsentTodayClasses(percentile)
-  })
- 
-  
-});
-const attendedToday=async()=>{
-  const userID = await User();
-  const currentDate = new Date();
-  const dateString = currentDate.toISOString().split('T')[0];
+        if (error) {
+          throw error;
+        }
+        return attendance.length || 0;
+      }
 
-  const { data: sessions, error } =await supabase
-    .from('Sessions')
-    .select (`{count:exact}`)
-    .eq('userID', userID)
-    .eq('Date', dateString)
+      // Calculate percentages
+      const total = await sessions();
+      const present = await attended('Present');
+      const absent = await attended('Absent');
+      const result = total === 0 ? 0 : (present / total) * 100;
 
-  if (error) {
-    throw error;
-  }
-  const { data: attendance, error1 } =await supabase
-    .from('AttendanceRecords')
-    .select (`{count:exact}`)
-    .eq('userID', userID)
-    .eq('Status', 'Present')
-    .eq('Date', dateString)
+      setSemesterClasses({
+        result: result.toFixed(1),
+        present: present,
+        absent: absent,
+        classes: total,
+      });
+    };
 
+    fetchData();
 
-  return {attendance:attendance,sessions:sessions};
-}
+    // Fetch and set today's records
+    const todayRecords = async () => {
+      const userID = await User();
+      const today = new Date();
+      const todayDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
+      // Fetch today's sessions
+      async function TodaySessions() {
+        const { data: sessions, error } = await supabase
+          .from('Sessions')
+          .select('*')
+          .eq('userID', userID)
+          .eq('Date', todayDate)
+          .order('Date');
 
-attendedToday().then((attendanceToday) => {
-const sessions=attendanceToday.sessions.length
-const attendance=attendanceToday.attendance.length
-const percentage=attendance/sessions*100
-setAttendedTodayClasses(percentage)
-})
- 
-  const totalClasses=4; // Total classes in the semester
+        if (error) {
+          console.error('Error fetching sessions:', error.message);
+          return 0;
+        } else {
+          return sessions.length;
+        }
+      }
 
-console.log('classes',attendedClasses)
-  const semesterAttendance = calculateSemesterAttendance(totalClasses, attendedClasses);
-  
-  console.log("semester",semesterAttendance)
+      // Fetch today's records where status is present
+      const attendedClasses = async (status) => {
+        const { data: attendance, error } = await supabase
+          .from('AttendanceRecords')
+          .select('*')
+          .eq('Date', todayDate)
+          .eq('userID', userID)
+          .eq('Status', status)
+          .eq('Date', todayDate);
+
+        if (error) {
+          throw error;
+        }
+        return attendance.length || 0;
+      }
+
+      const present = await attendedClasses('Present');
+      const absent = await attendedClasses('Absent');
+
+      setAttendedTodayClasses(present);
+      setAbsentTodayClasses(absent);
+    };
+
+    todayRecords();
+  }, []);
+
     return (
       <div className="bg-white rounded-lg p-4 shadow-md md:ml-[4rem]">
         <div className="py-0 px-0 mb-10">
@@ -104,7 +136,7 @@ console.log('classes',attendedClasses)
             <div className="w-12 h-12">
               <CircularProgressbar
                 value={attendedTodayClasses} // Set the value for progress (change as needed)
-                text={`${attendedTodayClasses.toFixed(2)}%`} // Display percentage
+                text={`${attendedTodayClasses.toFixed(1)}%`} // Display percentage
                 styles={buildStyles({
                   textColor: 'green', // Color of the percentage text
                   pathColor: 'green', // Color of the progress path
@@ -122,8 +154,8 @@ console.log('classes',attendedClasses)
             <div className="flex items-center space-x-2">
             <div className="w-12 h-12">
             <CircularProgressbar
-              value={absentTodayClasses} // Set the value for progress (change as needed)
-              text={`${absentTodayClasses.toFixed(2)}%`} // Display percentage
+              value={attendedTodayClasses} // Set the value for progress (change as needed)
+              text={`${attendedTodayClasses.toFixed(1)}%`} // Display percentage
               styles={buildStyles({
                 textColor: 'red', // Color of the percentage text
                 pathColor: 'red', // Color of the progress path
@@ -169,8 +201,8 @@ console.log('classes',attendedClasses)
         <h2 className="text-purple-600 text-sm font-semibold mb-2 ml-[11rem]">Semester Attendance Progress</h2>
         <div className="w-24 h-24 mx-auto">
           <CircularProgressbar
-            value={semesterAttendance}
-            text={`${semesterAttendance.toFixed(2)}%`}
+            value={semesterClasses.result}
+            text={`${semesterClasses.result || 0}%`}
             styles={buildStyles({
               textColor: 'purple',
               pathColor: 'purple',
@@ -188,7 +220,20 @@ console.log('classes',attendedClasses)
 
       {/* Total Classes, Days Present, Days Absent */}
       <div className="flex space-x-6">
-        <TotalStats />
+      <div className="flex space-x-6">
+          <div className="text-center">
+            <p className="text-lg font-semibold text-purple-600">{semesterClasses.classes}</p>
+            <p className="text-gray-600">Total Classes</p>
+          </div>
+          <div className="text-center">
+            <p className="text-lg font-semibold text-purple-600">{semesterClasses.present}</p>
+            <p className="text-gray-600">Days Present</p>
+          </div>
+          <div className="text-center">
+            <p className="text-lg font-semibold text-purple-600">{semesterClasses.absent}</p>
+            <p className="text-gray-600">Days Absent</p>
+          </div>
+        </div>
       </div>
   
       </div>
