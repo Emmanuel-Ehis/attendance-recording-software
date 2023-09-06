@@ -5,7 +5,14 @@ import user from '@/DB/User';
 import supabase from '@/DB/Client';
 import { useRouter } from 'next/router';
 
-
+/**
+ * TODO
+ * Use a modal to show class details on click
+ * mark student absent if time passes
+ * 
+ * 
+ * 
+ */
 
 
 const Dashboard = ({ setSelectedClass }) => {
@@ -14,10 +21,12 @@ const Dashboard = ({ setSelectedClass }) => {
 
   const [fetchedData, setFetchedData] = useState([]);
   const [attendanceStatus, setAttendanceStatus] = useState('');
+
+
   async function getClassDetails(items) {
     // Create an empty array to store the results
     let results = [];
-    let status='';
+   
   
     for (let item of items) {
  
@@ -87,6 +96,7 @@ async function getAttendanceStatus(ClassID, userId, dateString) {
     if (error) {
       throw error;
     }
+ 
 const results = await getClassDetails(sessions);
 
       setFetchedData(results); 
@@ -105,7 +115,7 @@ const results = await getClassDetails(sessions);
     const { data, error } = await supabase
     .from('AttendanceRecords')
     .insert([
-      { RoleID:'1', Status: 'Present', SubjectID:SubjectID , userID: userId, Date: dateString},
+      { RoleID:'1', Status: 'Present', SubjectID:SubjectID , userID: userId, Date: dateString },
     ])
     .select()
     if (error) {
@@ -169,7 +179,7 @@ const results = await getClassDetails(sessions);
               <p className="text-gray-600 md:hidden">
                 {classItem.Start} - {classItem.End}
               </p>
-              {renderClassStatus(classItem)}
+              {renderClassStatus(classItem.status)}
             </div>
             <div className="flex items-center mt-[-2rem]">
               <p className="text-gray-600 hidden md:block">{classItem.Start}</p>

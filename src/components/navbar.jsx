@@ -3,7 +3,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import supabase from '@/DB/Client';
-
+/**
+ * TODO
+ * Notifications needs to work
+ * Messages needs to work
+ * 
+ */
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
 

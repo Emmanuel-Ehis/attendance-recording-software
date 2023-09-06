@@ -4,7 +4,13 @@ import 'react-circular-progressbar/dist/styles.css';
 import TrendLineGraph from '@/components/TrendLineGraph';
 import supabase from '@/DB/Client';
 import User from '@/DB/User';
-
+/**
+ * TODO
+ * Today classes need to show correct data
+ * attendance this month needs to use data from database
+ * Trend in attendance needs to be in sync with db
+ * 
+ */
 const History = () => {
   const [semesterClasses, setSemesterClasses] = useState({
     result: 0,

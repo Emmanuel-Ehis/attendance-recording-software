@@ -3,7 +3,12 @@ import { startOfMonth, endOfMonth, eachDayOfInterval, format, getDay } from 'dat
 import User from '@/DB/User';
 import supabase from '@/DB/Client';
 import  { useEffect, useState } from 'react';
-
+/**
+ * TODO
+ * Update modal correctly
+ * update modal UI
+ * 
+ */
 const Calendar = ({ classes }) => {
   const [dummyClasses, setDummyClasses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,17 +47,18 @@ const Calendar = ({ classes }) => {
     }
   }
 //handle when a user clicks on a class
-  const handleSessionClick = (session) => {
-    setIsModalOpen(true);
-   const selected= dummyClasses.find((sessionItem) => sessionItem.name === session);
+const handleSessionClick = (session) => {
+  setIsModalOpen(true);
+  const selected = dummyClasses.find((sessionItem) => sessionItem.name === session);
 
-    setSelectedSession(selected);
-  };
+  setSelectedSession(selected);
+};
+
 
   //close the modal
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedSession(null);
+    setSelectedSession('');
   };
 
 
