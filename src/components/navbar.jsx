@@ -1,23 +1,47 @@
-import React, { useEffect, useState } from 'react';
+// src/app/components/Navbar.jsx
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import PocketBase from 'pocketbase';
-
+import supabase from '@/DB/Client';
+/**
+ * TODO
+ * Notifications needs to work
+ * Messages needs to work
+ * 
+ */
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
-  const pb = new PocketBase('http://127.0.0.1:8090');
 
   useEffect(() => {
-   
     async function fetchUserData() {
-    
-      const data = pb.authStore.model;
-   
-      const imageURL=`http://127.0.0.1:8090/api/files/${data.collectionId}/${data.id}/${data.avatar}?token=${pb.authStore.token}`
-      setUserData({
-        ...data,
-        avatarUrl: imageURL,
-      });
+      try {
+        const { data, error } = await supabase.auth.getUser();
+
+        if (data) {
+          const { user } = data;
+          const id = user.id;
+          const em = user.email;
+
+          const { data: userdetails } = await supabase
+            .from('Users')
+            .select('*')
+            .eq('userID', id);
+
+          if (userdetails && userdetails.length > 0) {
+            const { Name } = userdetails[0];
+            setUserData({
+              email: em,
+              Name: Name,
+            });
+          }
+        }
+
+        if (error) {
+          console.error("Error fetching user data:", error.message);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error.message);
+      }
     }
 
     fetchUserData();
@@ -37,31 +61,27 @@ const Navbar = () => {
           <i className="fa-regular fa-message text-black transition-colors hover:text-red-500"></i>
           <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
         </div>
-        {/* if no user data display login button otherwise userdata */}
-        {!userData ? (
-          <Link href="/login">
-            <button className="bg-black text-white px-4 py-2 rounded">
-              Login
-            </button>
-          </Link>
-        ) : (
-          <div className="flex items-center space-x-2">
-            <div className="relative cursor-pointer transform hover:scale-105">
-              <Image
-                src={userData.avatarUrl}
-                alt="avatar"
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
+
+        <div className="flex items-center space-x-2">
+          <Image
+            src="/profile-picture.jpeg"
+            alt="User Profile"
+            className="w-10 h-10 rounded-full"
+            width={40}
+            height={40}
+          />
+          <div className="flex flex-col">
+            <div className="font-semibold text-black">
+              {userData ? userData.email: 'emanuel@gmail.com'}
             </div>
-            <div className="font-semibold">{userData.name}</div>
+            <div className="text-sm text-gray-400">
+              {userData ? userData.Name : 'emanuel Oarizowam'}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );
 };
 
 export default Navbar;
-

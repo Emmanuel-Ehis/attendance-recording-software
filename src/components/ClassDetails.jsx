@@ -60,7 +60,7 @@ const ClassDetails = ({ className,resetSelectedClass }) => {
           onClick={resetSelectedClass}
         >
           See All Today’s Lectures
-          <i className="fas fa-arrow-right m-2 ml-6"></i>
+          <i className="fas fa-qarrow-right m-2 ml-6"></i>
         </div>
         <div
           href="#"
