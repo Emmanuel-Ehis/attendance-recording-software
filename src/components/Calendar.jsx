@@ -96,6 +96,7 @@ const handleSessionClick = (session) => {
 
 
 return (
+  <div className="container">
   <div className="grid grid-cols-7 gap-4 p-8 shadow-md md:ml-[4rem]">
     {/* Render days of the week headers */}
     {weekdays.map((day) => (
@@ -133,27 +134,34 @@ return (
         return <div key={formattedDay} className={`p-2 text-center border ${cellBgColor}`} />;
       }
     })}
-    {/* Modal for when a user clicks on a class */}
-    {isModalOpen && (
-      <div className="fixed inset-0 flex items-center justify-center z-50">
-        <div className="absolute" onClick={closeModal}></div>
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold">Class details</h2>
-          {selectedSession && (
-            <div>
-              <p className='Bold'>Name: {selectedSession.name}</p>
-              <p>Date: {selectedSession.date}</p>
-              <p>Class starts: {selectedSession.starts}</p>
-              <p>Class ends: {selectedSession.ends}</p>
-         
-            </div>
-          )}
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4" onClick={closeModal}>
-            Close
-          </button>
-        </div>
-      </div>
-    )}
+  </div>
+      {isModalOpen && (
+<div className="bg-green-100 p-4 rounded-lg shadow-md flex flex-col items-center space-y-4 md:ml-[4rem]">
+<div className="flex justify-center">
+  <p className="text-green-600 text-center">
+  Name: {selectedSession.name}
+</p>
+</div>
+<div className="flex justify-center">
+  <p className="text-green-600 text-center">
+  Date: {selectedSession.date}
+</p>
+</div>
+<div className="flex justify-center">
+  <p className="text-green-600 text-center">
+  Class starts: {selectedSession.starts}
+</p>
+</div>
+<div className="flex justify-center">
+  <p className="text-green-600 text-center">
+  Class ends: {selectedSession.ends}
+</p>
+</div>
+<div className="flex justify-center">
+  <button className="text-black hover:underline bg-green-500 px-5 py-2 rounded-full cursor-pointer transform hover:scale-105" onClick={closeModal}>Close</button>
+</div>
+</div>
+      )}
   </div>
 );
           }
