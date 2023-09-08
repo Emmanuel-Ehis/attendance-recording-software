@@ -37,18 +37,17 @@ const Dashboard = ({ setSelectedClass }) => {
 
       const status = attendanceData[0]?.Status || ''; // Extract the status if available, or set an empty string if not
 
-      console.log(status);
       let classDetail = {
         Start: item.StartTime,
         End: item.EndTime,
         Name: item.Subjects.Name,
         initals: item.Subjects.Initials,
-        ClassID: item.SubjectID,
+        SubjectID: item.SubjectID,
         status: status,
       }
     
 
-  
+  console.log(classDetail)
       results.push(classDetail);
     }
   
@@ -74,6 +73,7 @@ async function getAttendanceStatus(ClassID, userId, dateString) {
   if (error) {
     throw error;
   }
+  console.log("attendance",attendance)
 
   return attendance || [];
 }
@@ -100,7 +100,7 @@ async function getAttendanceStatus(ClassID, userId, dateString) {
 const results = await getClassDetails(sessions);
 
       setFetchedData(results); 
-     
+   
       
     } catch (error) {
       console.error('DB error', error);
@@ -109,6 +109,7 @@ const results = await getClassDetails(sessions);
   }
 
   async function UpdateStatus(SubjectID) {
+
     const userId = await user();
     const currentDate = new Date();
     const dateString = currentDate.toISOString().split('T')[0];
@@ -119,12 +120,9 @@ const results = await getClassDetails(sessions);
     ])
     .select()
     if (error) {
-      throw error;
+    alert ('Attendance already marked')
     }
 
-    if (data) {
-      alert('Attendance marked successfully');
-    }
 
   }
 
@@ -143,12 +141,22 @@ const results = await getClassDetails(sessions);
     } else {
       return (
         <button
-          onClick={() => UpdateStatus(classItem.ClassID)} // Pass classItem.ClassID as an argument
-          className="bg-green-500 text-white px-2 py-1 rounded-full hover:underline"
-          disabled={classItem.status === 'Absent'}
-        >
-          Mark me present
-        </button>
+        onClick={async () => {
+          try {
+            await UpdateStatus(classItem.SubjectID);
+            // Handle success if needed
+            alert('Attendance marked successfully');
+          } catch (error) {
+            // Handle errors
+            console.error('Error marking attendance:', error);
+          }
+        }}
+        className="bg-green-500 text-white px-2 py-1 rounded-full hover:underline"
+        disabled={classItem.status === 'Absent'}
+      >
+        Mark me present
+      </button>
+
       );
     }
   };
@@ -169,7 +177,7 @@ const results = await getClassDetails(sessions);
             key={index}
             className="bg-white rounded-lg p-4 m-2 flex items-center space-x-4 shadow-md cursor-pointer transform hover:scale-105"
             style={{ width: '100%', maxWidth: '30rem' }}
-            onClick={() => setSelectedClass(classItem.ClassID[0])}
+            onClick={() => setSelectedClass(classItem.SubjectID)}
           >
             <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-gray-700 font-bold text-lg cursor-pointer">
               {classItem.initals}
@@ -179,7 +187,7 @@ const results = await getClassDetails(sessions);
               <p className="text-gray-600 md:hidden">
                 {classItem.Start} - {classItem.End}
               </p>
-              {renderClassStatus(classItem.status)}
+              {renderClassStatus(classItem)}
             </div>
             <div className="flex items-center mt-[-2rem]">
               <p className="text-gray-600 hidden md:block">{classItem.Start}</p>
